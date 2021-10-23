@@ -70,16 +70,6 @@ TEST(CaseCompoundShape, SelectByFirstAreaFunctionOnShape) {
     EXPECT_EQ(s, t);
 }
 
-// TEST(CaseCompoundShape, SelectByFirstAreaFunctionOnCircle) {
-//     Shape* c = new Circle(1.0);
-//     try {
-//         Shape* t = selectFirstByArea(c, 20.0, 30.0);
-//         FAIL();
-//     }catch(std::string e) {
-//         ASSERT_EQ("method not allowed", e);
-//     }
-// }
-
 TEST(CaseCompoundShape, SelectFirstByAreaIterator) {
     Shape* c1 = new Circle(1.0);
     Shape* c2 = new Circle(1.0);

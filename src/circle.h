@@ -5,6 +5,7 @@
 #include "shape.h"
 #include "./iterator.h"
 #include "./null_iterator.h"
+#include "./shape_visitor.h"
 
 class Circle: public Shape {
     public:
@@ -20,6 +21,10 @@ class Circle: public Shape {
 
         Iterator* createIterator() const override {
             return new NullIterator();
+        }
+
+        void accept(ShapeVisitor* visitor) override {
+            visitor->visitCircle(this);
         }
 
     private:

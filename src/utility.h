@@ -33,3 +33,17 @@ Shape* selectFirstByArea(Iterator* it, double min, double max) {
     }
     return nullptr;
 }
+
+template<class ShapeConstraint>
+Shape* selectShape(Shape* shape, ShapeConstraint constraint) {
+    Iterator* it = shape->createIterator();
+    Shape* result = nullptr;
+    for (it->first(); !it->isDone(); it->next()) {
+        if (constraint(it->currentItem())) {
+            result = it->currentItem();
+            break;
+        }
+    }
+    delete it;
+    return result;
+}

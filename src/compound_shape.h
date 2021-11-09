@@ -4,6 +4,7 @@
 #include "shape.h"
 #include "./iterator.h"
 #include "./compound_iterator.h"
+#include "./shape_visitor.h"
 
 class CompoundShape: public Shape {
     public:
@@ -45,6 +46,10 @@ class CompoundShape: public Shape {
 
         ~CompoundShape() {
             delete [] _shapes;
+        }
+
+        void accept(ShapeVisitor* visitor) override {
+            visitor->visitCompoundShape(this);
         }
 
     private:

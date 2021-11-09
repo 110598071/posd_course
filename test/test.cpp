@@ -5,6 +5,8 @@
 #include "test_shape.h"
 #include "test_compound_shape.h"
 #include "test_iterator.h"
+#include "test_utility.h"
+#include "test_visitor.h"
 
 #include <stdlib.h>
 #include <iostream>

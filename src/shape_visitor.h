@@ -1,5 +1,6 @@
 #pragma once
 
+class Shape;
 class Circle;
 class Square;
 class CompoundShape;
@@ -13,18 +14,4 @@ class ShapeVisitor {
         virtual Shape* getShape() = 0;
     protected:
         ShapeVisitor(){}
-};
-
-typedef bool (*ShapeConstraint)(Shape*); //pointer to function
-class SelectShapeVisitor: public ShapeVisitor {
-    public:
-        SelectShapeVisitor():_result(nullptr), _constraint(nullptr) {}
-        SelectShapeVisitor(ShapeConstraint constraint):_result(nullptr), _constraint(constraint) {}
-        void visitCompoundShape(CompoundShape* cs);
-        void visitCircle(Circle* c);
-        void visitSquare(Square* c);
-        Shape* getShape();
-    private:
-        Shape* _result;
-        ShapeConstraint _constraint;
 };

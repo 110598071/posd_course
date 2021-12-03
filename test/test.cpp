@@ -7,6 +7,8 @@
 #include "test_iterator.h"
 #include "test_utility.h"
 #include "test_visitor.h"
+#include "test_builder.h"
+#include "test_parser.h"
 
 #include <stdlib.h>
 #include <iostream>

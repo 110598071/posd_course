@@ -3,6 +3,7 @@
 
 #include "shape.h"
 #include "./iterator.h"
+#include "./null_iterator.h"
 #include "./shape_visitor.h"
 #include <string>
 
@@ -19,7 +20,7 @@ class Square: public Shape {
             return _sideLength*4;
         }
         Iterator* createIterator() const override {
-            throw std::string("method not allowed");
+            return new NullIterator();
         }
         void accept(ShapeVisitor* visitor) override {
             visitor->visitSquare(this);

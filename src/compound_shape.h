@@ -1,60 +1,73 @@
 #ifndef COMPOUND_SHAPE_H
 #define COMPOUND_SHAPE_H
 
-#include "shape.h"
+#include <list>
+
+#include "./shape.h"
 #include "./iterator.h"
 #include "./compound_iterator.h"
 #include "./shape_visitor.h"
 
 class CompoundShape: public Shape {
     public:
-        CompoundShape(Shape* shapes[], int count): _count(count) {
-            _shapes = new Shape*[_count];
-            for (int i = 0; i < _count; i++){
-                _shapes[i] = shapes[i]; //shallow copy
+        CompoundShape() {}
+
+        CompoundShape(Shape* shapes[], int count) {
+            for (int i = 0; i < count; i++){
+                _shapes.push_back(shapes[i]);
             }
         };
 
         double area() const override {
             double result = 0;
-            for (int i = 0; i < _count; i++) {
-                result += _shapes[i]->area();
+            for (Shape* s : _shapes) {
+                result += s->area();
             }
             return result;
         }
 
-        Shape* selectFirstByArea(double min, double max) const {
-            for (int i = 0; i < _count; i++) {
-                if (min < _shapes[i]->area() && _shapes[i]->area() < max) {
-                    return _shapes[i];
-                }
-            }
-            return nullptr;
-        }
-
         Iterator* createIterator() const override {
-            return new CompoundIterator(_shapes, _shapes + _count);
-        }
-
-        Shape** shapes() const {
-            return _shapes;
+            // return new CompoundIterator<Shape**>(_shapes, _shapes + _count);
+            return new CompoundIterator<std::list<Shape*>::const_iterator>(_shapes.begin(), _shapes.end());
         }
 
         int count() const {
-            return _count;
+            return _shapes.size();
         }
 
         ~CompoundShape() {
-            delete [] _shapes;
+            for (Shape* s : _shapes) {
+                delete s;
+            }
         }
 
         void accept(ShapeVisitor* visitor) override {
             visitor->visitCompoundShape(this);
         }
 
+        void remove(Shape* shape) override {
+            for (auto it = _shapes.begin(); it != _shapes.end(); it++) {
+                if (*it == shape) {
+                    delete *it;
+                    _shapes.erase(it);
+                    break;
+                }
+                else{
+                    Iterator* shapeIt = (*it)->createIterator();
+                    if (!shapeIt->isDone()) {
+                        (*it)->remove(shape);
+                    }
+                    delete shapeIt;
+                }
+            }
+        }
+
+        void add(Shape* shape) override {
+            _shapes.push_back(shape);
+        }
+
     private:
-        int _count;
-        Shape** _shapes;
+        std::list<Shape*> _shapes;
 };
 
 #endif
